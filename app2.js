@@ -1,7 +1,10 @@
 var db = require("./models/db.js");
 var express = require("express");
+//cookie
+var cookieParse = require("cookie-parser");
 // var mongoClient = require("mongodb").MongoClient;
 var app = express();
+app.use(cookieParse());
 app.get("/",function(req,res){
     db.insertOne('stu',{"name":"小潘92333","age":33},function(err,result){
         if(err){
@@ -33,10 +36,12 @@ app.get("/update",function(req,res){
             res.send("修改数据失败");
             return;
         }
+        
         res.send(result);
     })
 });
 app.get("/count",function(req,res){
+    console.log(req.cookies.username);
     db.getCountByCollectionName('stu',function(count){
         res.send("该集合文档数是："+count);
     })
